@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name = "django-jiggety",
@@ -7,16 +7,17 @@ setup(
         "jiggety",
         "jiggety.task_configs",
         "jiggety.task_results",
-        "jiggety.tests",
+#        "jiggety.tests",
     ],
     author = "Lukasz Dobrzanski",
     author_email = "lukasz.m.dobrzanski@gmail.com",
     description = "HTTP server response testing tool. FunFunFun",
     url = "http://github.com/ssspiochld/django-kong/tree/master",
-    package_data = {
-        'jiggety': [
-            'templates/*',
-            'utils/*',
-        ],
-    },
+    zip_safe=False,
+#    package_data = {
+#        'jiggety': [
+#            'templates/*',
+#            'utils/*',
+#        ],
+#    },
 )
