@@ -2,8 +2,6 @@
 Architecture Description
 ========================  
 
-.. _arch_components:
-
 Design decisions and considerations
 ===================================
 
@@ -22,13 +20,15 @@ In next few points describe things I considered important and took into account:
     - using cron for scheduling **flexibility and separation** (each test as a separate process) 
     - self_refreshig of *what test* and *when*  should run
 
-I took *syslog* functionality (when all test runners report to one machine) for data exchange . Some advantages of using CouchDB over *syslog* in that case:                                   
+I took *syslog* functionality (when all test runners report to one machine) for data exchange into account. Although it was never mend for that purpose initially the idea looked interesting. Some advantages of using CouchDB over *syslog* in that case:                                   
 
-- when the global syslog machine goes down (due machine or network fail) there is a chance that messages will get lost 
+- when the global *syslog* machine goes down (due machine or network fail) there is a chance that messages will get lost 
 - after it recovers some extra synchronization will be required what is not the case of CouchDB replication
 - map/reduce tasks seem as a good match for log analysis 
 
 There are some similar issues when it comes the classic RDBMS and CouchDB for choosing a solution for test configuration. I share the filling that none of above given reasons makes in given case a huge difference and the main motivation was to make an experiment with CouchDB.
+
+.. _arch_components:
 
 Overview
 ========
