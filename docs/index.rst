@@ -6,3 +6,9 @@
 Jiggety Documentation
 =====================
 
+.. toctree::
+    :maxdepth: 2
+   
+    INSTALL.rst
+    design_requirements.rst
+    architecture.rst
