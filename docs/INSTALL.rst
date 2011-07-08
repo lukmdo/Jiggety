@@ -22,6 +22,7 @@ Just run the commands:
     pip install -e git://github.com/ssspiochld/Jiggety.git#egg=jiggety
     cd src/jiggety
     pip install -r requirements.txt
+    
  
 Install CouchDB (`on Unix/Linux <http://guide.couchdb.org/editions/1/en/unix.html>`_ , `on Mac <http://guide.couchdb.org/editions/1/en/mac.html>`_) and verify that your CouchDB is ready:
 
@@ -40,6 +41,12 @@ Then customize your installation by editing the `jiggety/settings.py` configurat
     Rate in which *jiggety* scheduling tasks will check for new test configuration.  
 **JIGGETY_TEST_FAIL_LOG_LEVEL** (Optional: *Default "WARN"*)
     One of valid log levels *DEBUG, INFO, WARN, ERROR or CRITICAL* to use when a test fails.
+    
+Then run the command to make DB level synchronization:
+
+.. sourcecode:: bash
+
+    python jiggety/manage.py sync_couchdb
       
 Longer version
 ==============

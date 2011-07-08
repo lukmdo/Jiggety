@@ -12,3 +12,5 @@ Jiggety Documentation
     INSTALL.rst
     design_requirements.rst
     architecture.rst
+    results.rst
+    todo.rst
