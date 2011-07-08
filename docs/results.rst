@@ -1,17 +1,19 @@
-========================
-How does it looks like ?
-========================
+=======================
+How does it look like ?
+=======================
 
 Test Configuration
 ==================
 
 
 .. figure:: _static/TestConfig.png
+    :align: center
     :alt: Sipmle page-test confguration
     
     Sipmle page-test confguration   
 
 .. figure:: _static/TestConfig404.png
+    :align: center
     :alt: Configuration for HTTP 404 Not Found   
 
     Configuration for HTTP 404 Not Found

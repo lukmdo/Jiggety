@@ -2,13 +2,14 @@
 Install Instructions
 ====================
 
-**Notice:** To run full *jiggety* functionality  it is recommended to create separate user by command:
+.. note::
+    To run full *jiggety* functionality  it is recommended to create separate user:
+    
+    .. sourcecode:: bash
 
-.. sourcecode:: bash
+        sudo adduser jiggety
 
-    sudo adduser jiggety
-
-This is architectural decision is a side effect of current *jiggety* implementation taking the `crontab <http://en.wikipedia.org/wiki/Cron>`_ for its purposes. 
+    This is architectural decision is a side effect of current *jiggety* implementation taking the `crontab <http://en.wikipedia.org/wiki/Cron>`_ for its purposes. 
  
 Short version
 =============
@@ -31,17 +32,7 @@ Install CouchDB (`on Unix/Linux <http://guide.couchdb.org/editions/1/en/unix.htm
     couchdb &
     curl -D- http://127.0.0.1:5984/ 
 
-Then customize your installation by editing the `jiggety/settings.py` configuration file. The most important settings:
-
-**TIME_ZONE** 
-    Global timezone setting for all the *jiggety* python code.   
-**COUCHDB_DATABASES**
-    The local CouchDB IP/PORT/DB settings. 
-**JIGGETY_REFRESH_RATE** (Optional: *Default "1 * * * *"*)
-    Rate in which *jiggety* scheduling tasks will check for new test configuration.  
-**JIGGETY_TEST_FAIL_LOG_LEVEL** (Optional: *Default "WARN"*)
-    One of valid log levels *DEBUG, INFO, WARN, ERROR or CRITICAL* to use when a test fails.
-    
+Then customize your installation by editing the `jiggety/settings.py` configuration file
 Then run the command to make DB level synchronization:
 
 .. sourcecode:: bash
@@ -61,6 +52,18 @@ They are briefly described in the :ref:`arch_components` shown how they are inte
 Additionally the environment can be extended by modules defined in `extra_dev_requirements.txt`  file:  
 
 .. include:: ../extra_dev_requirements.txt
-    :literal: 
-    
-                                       
+    :literal:
+
+Settings for customizing the installation:
+
+**TIME_ZONE** 
+    Global timezone setting for all the *jiggety* python code.   
+**COUCHDB_DATABASES**
+    The local CouchDB IP/PORT/DB settings. 
+**JIGGETY_REFRESH_RATE** (Optional: *Default "1 * * * *"*)
+    Rate in which *jiggety* scheduling tasks will check for new test configuration.  
+**JIGGETY_TEST_FAIL_LOG_LEVEL** (Optional: *Default "WARN"*)
+    One of valid log levels *DEBUG, INFO, WARN, ERROR or CRITICAL* to use when a test fails.
+**LOGGING**
+    It can be customized by changing any of *loggers.jiggety.tasks*, *handlers.jiggety_logfile*, *formatters.jiggety_formatter* keys 
+

@@ -5,7 +5,8 @@ Architecture Description
 Design decisions and considerations
 ===================================
 
-**Notice:** the problem did not require 99999 availability but I took on purpose (for fun and educational purposes) it a little bit in that direction. I called the project *jiggety*  after `Jiggety Jig <http://muppet.wikia.com/wiki/Jiggety_Jig>`_ to emphasis it not too serious project :)
+.. note:: 
+    The :ref:`arch_requirements` did not require 99999 availability but I took on purpose (for fun and educational purposes) it a little bit in that direction. I called the project *jiggety*  after `Jiggety Jig <http://muppet.wikia.com/wiki/Jiggety_Jig>`_ to emphasis it not too serious project :)
 
 In next few points describe things I considered important and took into account: 
 

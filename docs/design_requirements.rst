@@ -1,3 +1,5 @@
+.. _arch_requirements:
+
 ===================
 Design Requirements
 ===================
