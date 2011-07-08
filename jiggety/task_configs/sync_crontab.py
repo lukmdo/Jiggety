@@ -15,13 +15,14 @@ and changing those variables may cause undesirable effects.
 import os
 import sys
 from django.conf import settings
-import jiggety.task_configs
+from jiggety.task_configs.models import TestConfig 
+from jiggety.task_configs import task_runner
  
 class CronSync(object):
     def __init__(self):
-        self.model = jiggety.task_configs.models.TestConfig
+        self.model = TestConfig
         self.JIGGETY_REFRESH_RATE = getattr(settings, 'JIGGETY_REFRESH_RATE', '1 * * * *')
-        self.task_runner_path = os.path.abspath(jiggety.task_configs.task_runner.__file__)
+        self.task_runner_path = os.path.abspath(task_runner.__file__)
     
     def get_crontab_settings(self):
         """Setup crontab environment"""
@@ -38,6 +39,7 @@ class CronSync(object):
         crontab_rules = []
         crontab_rules.extend(self.get_crontab_settings())
         crontab_rules.extend(self.get_self_refresh_rule())
+        crontab_rules.extend(['', '']) # visual separation
         for rule in self.model.get_all():
             rule_as_string = "%s %s %s # %s" % (rule.cron_signature, self.task_runner_path, rule._id, rule.test_name) 
             crontab_rules.append(rule_as_string)

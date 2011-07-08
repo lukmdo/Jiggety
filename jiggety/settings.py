@@ -137,12 +137,13 @@ INSTALLED_APPS = (
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'custom': {
-            'format': '%(levelname)s %(asctime)s %(message)s',
+        'jiggety_formatter': {
+            'format': '[%(levelname)s] %(asctime)s %(message)s',
         },
     },
     'handlers': {
@@ -153,8 +154,14 @@ LOGGING = {
         'console': {
             'level':'DEBUG',
             'class':'logging.StreamHandler',
-            'formatter': 'custom',
+            'formatter': 'jiggety_formatter',
         },
+        'jiggety_logfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename':'/tmp/jiggety.log',
+            'formatter': 'jiggety_formatter',
+         },
     },
     'loggers': {
         'django.request': {
@@ -163,7 +170,7 @@ LOGGING = {
             'propagate': True,
         },
         'jiggety.tasks': {
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['console', 'jiggety_logfile', 'mail_admins'],
             'level': 'DEBUG',
         },
     }
