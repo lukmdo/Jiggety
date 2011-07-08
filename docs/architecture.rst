@@ -36,14 +36,14 @@ Overview
 
 I decomposed the architecture into four functional elements presented in the figure below: 
 
-- **Persistence Layer** - Holding the test configuration and test results. I decided myself for **CouchDB** in this case.
-- **UI** - Letting user to manipulate the test configuration and browse test results. I chose **Django** web framework for building that part.
-- **Scheduling** - Running periodically tests accordingly to user settings. **Cron** id a solution joining simplicity with flexibility.
-- **Testing** - Executing the user defined tests and reporting results to *Persistence Layer*. Keeping in mind that the test object is HTTP server response times and content **Twill** looks as a best candidate for that job. 
+- **Persistence Layer** - Holding the test configuration and test results. I decided myself for `CouchDB <http://couchdb.apache.org/>`_ in this case.
+- **UI** - Letting user to manipulate the test configuration and browse test results. I chose `Django web framework <https://www.djangoproject.com/>`_  for building that part.
+- **Scheduling** - Running periodically tests accordingly to user settings. `Cron <http://en.wikipedia.org/wiki/Cron>`_ is a solution joining simplicity with flexibility and gives its jobs nice isolation.
+- **Testing** - Executing the user defined tests and reporting results to *Persistence Layer*. Keeping in mind that the test object is HTTP server response times and content `Twill <http://twill.idyll.org/commands.html>`_ looks as a best candidate for that job. 
 
 .. figure:: _static/functional_components.png
     :align: center
-    :alt: my picture
+    :alt: Functional components of the system
      
     Functional components of the system
 
@@ -54,8 +54,8 @@ In the figures bellow I illustrate how the architecture would change if the syst
 - some minor modifications in the UI to expose the multi-node feature to the user
    
 .. image:: _static/arch_elements.png
-    :alt: alt   
+    :alt: Single-node cofiguration
    
 .. image:: _static/arch_multi_node.png
-    :alt: my picture                
+    :alt: Multi-node configuration
     
