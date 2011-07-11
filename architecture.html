@@ -1,0 +1,181 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Architecture Description &mdash; Jiggety v0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/jiggety_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Jiggety v0.0.1 documentation" href="index.html" />
+    <link rel="next" title="How does it look like ?" href="results.html" />
+    <link rel="prev" title="Design Requirements" href="design_requirements.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="results.html" title="How does it look like ?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="design_requirements.html" title="Design Requirements"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Jiggety v0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="architecture-description">
+<h1>Architecture Description<a class="headerlink" href="#architecture-description" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="design-decisions-and-considerations">
+<h2>Design decisions and considerations<a class="headerlink" href="#design-decisions-and-considerations" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="design_requirements.html#arch-requirements"><em>Design Requirements</em></a> did not require 99999 availability but I took on purpose (for fun and educational purposes) it a little bit in that direction. I called the project <em>jiggety</em>  after <a class="reference external" href="http://muppet.wikia.com/wiki/Jiggety_Jig">Jiggety Jig</a> to emphasis it not too serious project :)</p>
+</div>
+<p>In next few points describe things I considered important and took into account:</p>
+<ul>
+<li><p class="first"><strong>fault-tolerance</strong> regarding both machines and network corruption</p>
+</li>
+<li><p class="first"><strong>self-manageability</strong> by minimizing the administration effort (especially useful in multi-node configuration)</p>
+</li>
+<li><p class="first"><strong>clarity and quality</strong> of results be accurate and avoid making false alerts (especially HTTP response time)</p>
+</li>
+<li><dl class="first docutils">
+<dt>important note <strong>HTTP response time != page load time</strong></dt>
+<dd><ul class="first last simple">
+<li>to test that the test should run in real browser environment that has Javascript support ie. <em>Selenium</em></li>
+<li><strong>loosely coupled</strong> test execution environment making replacing/extending easy</li>
+<li>more then one execution, collecting results and <strong>summarizing should be taken into design</strong> (similarity to the distributed testing case)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>scheduling</strong> could be a global option but I decided to give more freedom and make per test setting</dt>
+<dd><ul class="first last simple">
+<li>using cron for scheduling <strong>flexibility and separation</strong> (each test as a separate process)</li>
+<li>self_refreshig of <em>what test</em> and <em>when</em>  should run</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>I took <em>syslog</em> functionality (when all test runners report to one machine) for data exchange into account. Although it was never mend for that purpose initially the idea looked interesting. Some advantages of using CouchDB over <em>syslog</em> in that case:</p>
+<ul class="simple">
+<li>when the global <em>syslog</em> machine goes down (due machine or network fail) there is a chance that messages will get lost</li>
+<li>after it recovers some extra synchronization will be required what is not the case of CouchDB replication</li>
+<li>map/reduce tasks seem as a good match for log analysis</li>
+</ul>
+<p>There are some similar issues when it comes the classic RDBMS and CouchDB for choosing a solution for test configuration. I share the filling that none of above given reasons makes in given case a huge difference and the main motivation was to make an experiment with CouchDB.</p>
+</div>
+<div class="section" id="overview">
+<span id="arch-components"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>I decomposed the architecture into four functional elements presented in the figure below:</p>
+<ul class="simple">
+<li><strong>Persistence Layer</strong> - Holding the test configuration and test results. I decided myself for <a class="reference external" href="http://couchdb.apache.org/">CouchDB</a> in this case.</li>
+<li><strong>UI</strong> - Letting user to manipulate the test configuration and browse test results. I chose <a class="reference external" href="https://www.djangoproject.com/">Django web framework</a>  for building that part.</li>
+<li><strong>Scheduling</strong> - Running periodically tests accordingly to user settings. <a class="reference external" href="http://en.wikipedia.org/wiki/Cron">Cron</a> is a solution joining simplicity with flexibility and gives its jobs nice isolation.</li>
+<li><strong>Testing</strong> - Executing the user defined tests and reporting results to <em>Persistence Layer</em>. Keeping in mind that the test object is HTTP server response times and content <a class="reference external" href="http://twill.idyll.org/commands.html">Twill</a> looks as a best candidate for that job.</li>
+</ul>
+<div class="figure align-center">
+<img alt="Functional components of the system" src="_images/functional_components18.png" />
+<p class="caption">Functional components of the system</p>
+</div>
+<p>In the figures bellow I illustrate how the architecture would change if the system would run in multi-node configuration. I Decided to make use of CouchDB replication to keep the <em>testing nodes</em> in sync with the user defined test configuration. Would would require code changes would be:</p>
+<ul class="simple">
+<li>an extra aggregation step in CouchDB</li>
+<li>automate procedure for adding new <em>testing nodes</em></li>
+<li>some minor modifications in the UI to expose the multi-node feature to the user</li>
+</ul>
+<img alt="Single-node cofiguration" src="_images/arch_elements18.png" />
+<img alt="Multi-node configuration" src="_images/arch_multi_node18.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Architecture Description</a><ul>
+<li><a class="reference internal" href="#design-decisions-and-considerations">Design decisions and considerations</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="design_requirements.html"
+                        title="previous chapter">Design Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="results.html"
+                        title="next chapter">How does it look like ?</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/architecture.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="results.html" title="How does it look like ?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="design_requirements.html" title="Design Requirements"
+             >previous</a> |</li>
+        <li><a href="index.html">Jiggety v0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lukasz Dobrzanski.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

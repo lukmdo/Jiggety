@@ -1,0 +1,176 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Install Instructions &mdash; Jiggety v0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/jiggety_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Jiggety v0.0.1 documentation" href="index.html" />
+    <link rel="next" title="Design Requirements" href="design_requirements.html" />
+    <link rel="prev" title="Jiggety Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="design_requirements.html" title="Design Requirements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Jiggety Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Jiggety v0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="install-instructions">
+<h1>Install Instructions<a class="headerlink" href="#install-instructions" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>To run full <em>jiggety</em> functionality  it is recommended to create separate user:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo adduser jiggety
+</pre></div>
+</div>
+<p class="last">This is architectural decision is a side effect of current <em>jiggety</em> implementation taking the <a class="reference external" href="http://en.wikipedia.org/wiki/Cron">crontab</a> for its purposes.</p>
+</div>
+<div class="section" id="short-version">
+<h2>Short version<a class="headerlink" href="#short-version" title="Permalink to this headline">¶</a></h2>
+<p>Just run the commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre>mkvirtualenv --no-site-packages --python<span class="o">=</span>ABS_PATH_TO_PYTHON27 jiggety_http_tool
+cdvirtualenv
+pip install -e git://github.com/ssspiochld/Jiggety.git#egg<span class="o">=</span>jiggety
+<span class="nb">cd </span>src/jiggety
+pip install -r requirements.txt
+</pre></div>
+</div>
+<p>Install CouchDB (<a class="reference external" href="http://guide.couchdb.org/editions/1/en/unix.html">on Unix/Linux</a> , <a class="reference external" href="http://guide.couchdb.org/editions/1/en/mac.html">on Mac</a>) and verify that your CouchDB is ready:</p>
+<div class="highlight-bash"><div class="highlight"><pre>couchdb &amp;
+curl -D- http://127.0.0.1:5984/
+</pre></div>
+</div>
+<p>Then customize your installation by editing the <cite>jiggety/settings.py</cite> configuration file
+Then run the command to make DB level synchronization:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python jiggety/manage.py sync_couchdb
+</pre></div>
+</div>
+</div>
+<div class="section" id="longer-version">
+<h2>Longer version<a class="headerlink" href="#longer-version" title="Permalink to this headline">¶</a></h2>
+<p>The main python requirements are listed in the <cite>requirements.txt</cite> file:</p>
+<div class="highlight-python"><pre>Django==1.3
+couchdbkit==0.5.4
+numpy
+twill</pre>
+</div>
+<p>They are briefly described in the <a class="reference internal" href="architecture.html#arch-components"><em>Overview</em></a> shown how they are integrated with each other and external components.</p>
+<p>Additionally the environment can be extended by modules defined in <cite>extra_dev_requirements.txt</cite>  file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ipdb</span>
+<span class="n">ipython</span>
+<span class="n">sphinx</span>
+<span class="n">nose</span>
+</pre></div>
+</div>
+<p>Settings for customizing the installation:</p>
+<dl class="docutils">
+<dt><strong>TIME_ZONE</strong></dt>
+<dd>Global timezone setting for all the <em>jiggety</em> python code.</dd>
+<dt><strong>COUCHDB_DATABASES</strong></dt>
+<dd>The local CouchDB IP/PORT/DB settings.</dd>
+<dt><strong>JIGGETY_REFRESH_RATE</strong> (Optional: <em>Default &#8220;1 * * * *&#8221;</em>)</dt>
+<dd>Rate in which <em>jiggety</em> scheduling tasks will check for new test configuration.</dd>
+<dt><strong>JIGGETY_TEST_FAIL_LOG_LEVEL</strong> (Optional: <em>Default &#8220;WARN&#8221;</em>)</dt>
+<dd>One of valid log levels <em>DEBUG, INFO, WARN, ERROR or CRITICAL</em> to use when a test fails.</dd>
+<dt><strong>LOGGING</strong></dt>
+<dd>It can be customized by changing any of <em>loggers.jiggety.tasks</em>, <em>handlers.jiggety_logfile</em>, <em>formatters.jiggety_formatter</em> keys</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Install Instructions</a><ul>
+<li><a class="reference internal" href="#short-version">Short version</a></li>
+<li><a class="reference internal" href="#longer-version">Longer version</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Jiggety Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="design_requirements.html"
+                        title="next chapter">Design Requirements</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/INSTALL.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="design_requirements.html" title="Design Requirements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Jiggety Documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">Jiggety v0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lukasz Dobrzanski.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
