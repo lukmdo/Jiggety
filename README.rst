@@ -1,3 +1,3 @@
 HTTP server response testing tool 
 
-`Online documentation Link <http://tinyurl.com/JiggetyJig>`_ 
+`Online documentation Link <http://ssspiochld.github.com/Jiggety/>`_ 
